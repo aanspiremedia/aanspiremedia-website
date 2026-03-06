@@ -233,18 +233,23 @@
                     </div>
                 </div>
                 <div class="contact-form-container reveal-right">
-                    <form class="contact-form" id="contactForm">
+                    <form class="contact-form" id="contactForm" action="https://formsubmit.co/contact@aanspire.com"
+                        method="POST">
+                        <!-- Disable Captcha for smoother UX (optional) -->
+                        <input type="hidden" name="_captcha" value="false">
+                        <!-- Success Page Redirect (handled by JS, but good fallback) -->
                         <div class="form-group">
-                            <input type="text" id="name" required placeholder="Your Name">
+                            <input type="text" id="name" name="name" required placeholder="Your Name">
                         </div>
                         <div class="form-group">
-                            <input type="email" id="email" required placeholder="Your Email">
+                            <input type="email" id="email" name="email" required placeholder="Your Email">
                         </div>
                         <div class="form-group">
-                            <input type="tel" id="phone" placeholder="Your Phone Number">
+                            <input type="tel" id="phone" name="phone" placeholder="Your Phone Number">
                         </div>
                         <div class="form-group">
-                            <textarea id="message" rows="5" required placeholder="Your Message"></textarea>
+                            <textarea id="message" name="message" rows="5" required
+                                placeholder="Your Message"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary submit-btn">Send Message <i
                                 class="fas fa-paper-plane"></i></button>

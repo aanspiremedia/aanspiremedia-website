@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventsSection = document.querySelector('#events');
     if(eventsSection) counterObserver.observe(eventsSection);
 
-    // 5. Contact Form Submit Prevention (Demo only)
+    // 5. Contact Form Submission (Active via FormSubmit)
     const contactForm = document.getElementById('contactForm');
     if(contactForm) {
         contactForm.addEventListener('submit', (e) => {
@@ -111,8 +111,26 @@ document.addEventListener('DOMContentLoaded', () => {
             
             btn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
             btn.style.opacity = '0.8';
-            
-            setTimeout(() => {
+            btn.disabled = true;
+
+            // Gather form data
+            const formData = new FormData(contactForm);
+
+            // Send using FormSubmit AJAX
+            fetch('https://formsubmit.co/ajax/contact@aanspire.com', {
+                method: 'POST',
+                headers: { 
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(response => {
+                if(response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
                 btn.innerHTML = 'Message Sent! <i class="fas fa-check"></i>';
                 btn.style.background = '#48BB78'; // success green
                 btn.style.color = 'white';
@@ -123,8 +141,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.style.background = ''; // revert to css
                     btn.style.color = '';
                     btn.style.opacity = '1';
+                    btn.disabled = false;
                 }, 3000);
-            }, 1500);
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                btn.innerHTML = 'Failed to Send. <i class="fas fa-times"></i>';
+                btn.style.background = '#E53E3E'; // error red
+                btn.style.color = 'white';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = ''; // revert to css
+                    btn.style.color = '';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                }, 3000);
+            });
         });
     }
 
